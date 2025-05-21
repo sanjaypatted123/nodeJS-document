@@ -1,0 +1,105 @@
+
+## Modules in Node.js
+
+### What is a Module?
+
+A **module** is a reusable block of code in a separate file that can be **imported** into other files. Node.js uses the **CommonJS module system** by default.
+
+Each module in Node has its own **execution context**, avoiding variable collisions.
+
+---
+
+### Types of Modules
+
+1. **Core Modules**
+
+   * Built into Node.js
+   * No need to install
+   * Examples: `fs`, `http`, `path`, `crypto`
+
+   ```js
+   const fs = require('fs');
+   fs.writeFileSync('hello.txt', 'Hello, Node!');
+   ```
+
+2. **Local Modules (Custom)**
+
+   * Created by the developer
+   * Use `module.exports` to expose variables/functions
+   * Use `require()` to import them
+
+   ```js
+   // math.js
+   function add(a, b) {
+     return a + b;
+   }
+   module.exports = { add };
+   ```
+
+   ```js
+   // app.js
+   const math = require('./math');
+   console.log(math.add(2, 3)); // Output: 5
+   ```
+
+3. **Third-Party Modules**
+
+   * Installed via npm
+   * Located in `node_modules/`
+   * Declared in `package.json`
+
+   ```bash
+   npm install express
+   ```
+
+   ```js
+   const express = require('express');
+   const app = express();
+   ```
+---------------------------------
+
+http module::
+
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+    console.log(req);
+    process.exit();
+});
+
+server.listen(8100);
+
+
+here in this code we get a large o/p in terminal
+
+ Deep Explanation of Key Properties in terminal
+1. req.method
+The HTTP method used (GET, POST, etc.).
+
+Example: 'GET'
+
+2. req.url
+The path requested by the client.
+
+Example: '/', '/api', '/style.css'
+
+3. req.headers
+Object containing request headers sent by the client.
+
+Example:
+
+js
+Copy code
+{
+  host: 'localhost:8100',
+  user-agent: 'Mozilla/5.0...',
+  accept: '*/*',
+  ...
+}
+4. req.socket
+The underlying TCP connection object (low-level).
+
+Contains the IP address, port, and other transport-related data.
+
+5. req.httpVersion
+The HTTP version used (usually "1.1" or "2.0")
