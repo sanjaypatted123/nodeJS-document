@@ -1,1 +1,209 @@
-intro to node js
+
+* Introduction
+* History
+* Why Node.js
+* How Node.js runs (Event Loop, V8, libuv)
+* npm
+* Modules
+
+---
+
+### 1. Node.js Introduction
+
+Node.js is a **server-side runtime** built on the **V8 JavaScript engine**. It allows developers to use JavaScript for backend logic and server creation.
+
+Key traits:
+
+* **Non-blocking I/O**
+* **Single-threaded event loop**
+* **Built-in module system**
+* **Cross-platform**
+
+---
+
+### 2. History of Node.js
+
+* Created by **Ryan Dahl** in **2009**
+* Motivation: traditional web servers (like Apache) used blocking I/O and couldn't handle many concurrent connections efficiently
+* Introduced a **non-blocking, event-driven model** using **libuv** and **V8**
+
+---
+
+### 3. Why Node.js
+
+**High Performance:**
+
+* Uses **Google’s V8 engine**, which compiles JavaScript to native machine code
+* Ideal for **real-time**, **data-intensive** applications
+
+**Non-Blocking I/O Model:**
+
+* Unlike synchronous/blocking models, Node delegates I/O tasks (like file reads) to the system and continues execution
+
+**Unified Stack:**
+
+* Same language (JavaScript) on both client and server
+* Encourages code reusability (e.g., validation logic shared between frontend and backend)
+
+---
+
+### 4. How Node.js Runs
+
+Node.js uses the following components under the hood:
+
+#### A. V8 Engine
+
+* Compiles JavaScript into machine code
+* Provides fast execution and garbage collection
+
+```js
+// Simple example using V8 performance
+const start = performance.now();
+for (let i = 0; i < 1e6; i++) {} // fast execution
+const end = performance.now();
+console.log(`Loop ran in ${end - start} ms`);
+```
+
+#### B. libuv
+
+* A C library that provides Node with its **asynchronous I/O capabilities**
+* Handles thread pool, file system, networking, and more
+* Enables Node to delegate long-running tasks off the main thread
+
+#### C. Event Loop
+
+The **core** of Node.js’s concurrency model. It:
+
+* Executes code
+* Handles callbacks
+* Processes events
+
+**Phases of the Event Loop:**
+
+1. Timers (`setTimeout`, `setInterval`)
+2. I/O callbacks
+3. Idle, prepare
+4. Poll (waiting for I/O)
+5. Check (`setImmediate`)
+6. Close callbacks
+
+```js
+console.log('Start');
+
+setTimeout(() => {
+  console.log('Timeout');
+}, 0);
+
+setImmediate(() => {
+  console.log('Immediate');
+});
+
+console.log('End');
+```
+
+**Output (typically):**
+
+```
+Start
+End
+Immediate
+Timeout
+```
+
+Explanation:
+
+* `setImmediate()` runs in the **check** phase (sooner than timers)
+* `setTimeout(..., 0)` runs in the **timers** phase (after)
+
+---
+
+### 5. npm (Node Package Manager)
+
+**Purpose:**
+
+* Manage third-party packages and dependencies
+* Install both local (project-specific) and global packages
+* Used to publish reusable Node modules
+
+**Examples:**
+
+```bash
+npm init -y            # Create package.json
+npm install express    # Install Express locally
+npm install -g nodemon # Install globally
+```
+
+**package.json** holds project metadata:
+
+```json
+{
+  "name": "myapp",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
+```
+
+---
+
+### 6. Modules in Node.js
+
+Node uses the **CommonJS module system**:
+
+#### Built-in Modules
+
+These come with Node.js, such as `fs`, `path`, `http`.
+
+```js
+const fs = require('fs');
+fs.readFile('data.txt', 'utf8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});
+```
+
+#### Custom Modules
+
+Create your own modular files and export functions or objects:
+
+**math.js**
+
+```js
+function add(a, b) {
+  return a + b;
+}
+module.exports = { add };
+```
+
+**app.js**
+
+```js
+const math = require('./math');
+console.log(math.add(5, 3)); // 8
+```
+
+#### Third-party Modules
+
+Installed via npm, e.g., Express:
+
+```js
+const express = require('express');
+const app = express();
+app.get('/', (req, res) => res.send('Hello World'));
+app.listen(3000);
+```
+
+---
+
+### Summary of Key Internal Architecture:
+
+| Component  | Role                                 |
+| ---------- | ------------------------------------ |
+| V8 Engine  | Executes JavaScript code efficiently |
+| libuv      | Handles non-blocking I/O operations  |
+| Event Loop | Schedules and executes callbacks     |
+| npm        | Manages packages and dependencies    |
+| Modules    | Enable modular code organization     |
+
+---
