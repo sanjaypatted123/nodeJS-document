@@ -1,0 +1,65 @@
+A module system allows us to split up our code in 
+different parts or to include code written by other developers.
+
+Since the very beginning of NodeJS, the CommonJS module 
+system is the default module system within the ecosystem. 
+However, recently a new module system was added to NodeJS - ES modules.
+
+Why Do We Need a Module System in NodeJS?
+Usually, we want to split up our code into different files as soon 
+as our code base grows. 
+This way, we can not only organize and reuse code in a structured manner. 
+We can also control 
+in which file which part of the code is accessible.
+While this is a fundamental part in most programming 
+languages, this was not the case in JavaScript. 
+Everything we write in JavaScript is global by default. 
+This hasn’t been a huge issue in the early beginnings of the language. 
+As soon as developers began to write full-blown applications in JavaScript, 
+however, it got them into real trouble.
+This is why the NodeJS creators initially 
+decided to include a default module system, which is CommonJS.
+
+In NodeJS each .js file is handled as a separate CommonJS module.
+ This means that variables, functions, classes, etc. are not 
+ accessible to other files by default. You need to explicitly tell the module system which parts of your code should be exported.
+
+This is done via the module.exports object or the exports shortcut, 
+which are both available in every CommonJS module. Whenever 
+you want to import code into a file, you use the require() function. Let’s see how this all works together.
+
+Importing Core NodeJS Modules
+
+const http = require("http");
+
+const server = http.createServer(function (_req, res) {
+  res.writeHead(200);
+  res.end("Hello, World!");
+});
+server.listen(8080);
+
+
+Exporting and Importing Your Own Code
+To import our own code, we first need to tell CommonJS which aspects of our code should be accessible by other modules. 
+Let’s assume we want to write our own logging module to make logs look a bit more colorful:
+
+// logger.js
+const chalk = require("chalk");
+
+exports.logInfo = function (message) {
+    console.log(chalk.blue(message));
+};
+
+exports.logError = function logError(message) {
+    console.log(chalk.red(message));
+};
+
+exports.defaultMessage = "Hello World";
+
+Now we want to use those exported artifacts in our index file:
+
+// index.js
+const logger = require("./logger");
+
+logger.logInfo(`${logger.defaultMessage} printed in blue`);
+logger.logError("some error message printed in red");
