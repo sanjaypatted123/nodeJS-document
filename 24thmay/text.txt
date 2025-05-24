@@ -4,9 +4,9 @@ Great! Here's a **detailed breakdown of all the important npm topics**, includin
 
 ---
 
-## ✅ 1. **Basics of npm**
+## 1. **Basics of npm**
 
-### 📌 What is npm?
+### What is npm?
 
 * **npm** stands for **Node Package Manager**.
 * It's used to **install, share, and manage third-party libraries** (called packages) for JavaScript, especially in Node.js projects.
@@ -14,7 +14,7 @@ Great! Here's a **detailed breakdown of all the important npm topics**, includin
 
 ---
 
-### 🧑‍💻 Installing Node.js and npm
+### Installing Node.js and npm
 
 * Download from: [https://nodejs.org/](https://nodejs.org/)
 * After install, check:
@@ -26,7 +26,7 @@ Great! Here's a **detailed breakdown of all the important npm topics**, includin
 
 ---
 
-### 🆕 Initializing a Project
+### Initializing a Project
 
 Creates a `package.json` file, which stores metadata about the project and dependencies.
 
@@ -55,7 +55,7 @@ The `package.json` will contain:
 
 ---
 
-### 📦 Installing Packages
+###  Installing Packages
 
 * Example:
 
@@ -78,9 +78,9 @@ The `package.json` will contain:
 
 ---
 
-## 🧰 2. **Working with `package.json`**
+## 2. **Working with `package.json`**
 
-### 📘 Key Fields:
+###  Key Fields:
 
 * **`name`**: name of your app or library
 * **`version`**: semantic version (e.g., `1.0.0`)
@@ -90,7 +90,7 @@ The `package.json` will contain:
 
 ---
 
-### 🔢 Semantic Versioning
+### Semantic Versioning
 
 Format: `major.minor.patch`
 
@@ -100,7 +100,7 @@ Format: `major.minor.patch`
 
 ---
 
-## 🧱 3. **Managing Packages**
+## 3. **Managing Packages**
 
 ### ➕ Installing
 
@@ -115,21 +115,21 @@ npm install --save-dev nodemon  # Dev-only tool
 npm uninstall express
 ```
 
-### 🔄 Updating
+### Updating
 
 ```bash
 npm update          # Updates to latest minor/patch
 npm outdated        # Shows outdated packages
 ```
 
-### 🔒 Locking Dependencies
+### Locking Dependencies
 
 * `package-lock.json` ensures consistent installs across machines.
 * Do **not delete** it.
 
 ---
 
-## 🔍 4. **Exploring Packages**
+## 4. **Exploring Packages**
 
 * Browse: [https://www.npmjs.com/](https://www.npmjs.com/)
 * Search via CLI:
@@ -146,7 +146,7 @@ npm outdated        # Shows outdated packages
 
 ---
 
-## 🧪 5. **npm Scripts & Automation**
+## 5. **npm Scripts & Automation**
 
 Define custom tasks in `package.json`:
 
@@ -171,7 +171,7 @@ Why useful:
 
 ---
 
-## 📦 6. **Publishing Your Own Package**
+## 6. **Publishing Your Own Package**
 
 ### Steps:
 
@@ -190,21 +190,21 @@ npm publish --access public
 
 ---
 
-## 🧹 7. **Cleanup, Cache & Security**
+## 7. **Cleanup, Cache & Security**
 
-### 🧼 Cleaning Cache:
+### Cleaning Cache:
 
 ```bash
 npm cache clean --force
 ```
 
-### 🗑️ Remove unused:
+###  Remove unused:
 
 ```bash
 npm prune
 ```
 
-### 🛡️ Vulnerability Check:
+### Vulnerability Check:
 
 ```bash
 npm audit          # Lists known issues
@@ -215,7 +215,7 @@ npm audit fix      # Auto-fixes if possible
 
 ## 8. **Advanced Features**
 
-### 🔗 npm link (Local Dev)
+### npm link (Local Dev)
 
 Used to simulate a local package install:
 
@@ -250,7 +250,7 @@ In `package.json`:
 
 ---
 
-## 💡 Bonus: npx
+## Bonus: npx
 
 `npx` lets you run packages without installing them globally.
 
@@ -262,3 +262,108 @@ npx eslint .
 ```
 
 ---
+
+
+nodemon::
+
+Awesome! Let’s dig into **`nodemon`** — a super helpful tool when working with Node.js.
+
+---
+
+## What is `nodemon`?
+
+**`nodemon`** is a utility that **automatically restarts your Node.js app** whenever you make changes to the source code.
+
+### 💡 Without nodemon:
+
+You’d have to stop and restart your app manually every time you change a file:
+
+```bash
+node app.js
+# make changes
+# Ctrl + C
+node app.js
+```
+
+### With nodemon:
+
+Just run:
+
+```bash
+nodemon app.js
+```
+
+Then make changes to your files — it **watches the file system** and restarts your app automatically. No manual restarts needed.
+
+---
+
+## 🔧 How to install nodemon
+
+### 1. **Globally** (available in all projects):
+
+```bash
+npm install -g nodemon
+```
+
+### 2. **Locally** (recommended for per-project use):
+
+```bash
+npm install --save-dev nodemon
+```
+
+> The `--save-dev` flag means it's used only during development, not in production.
+
+---
+
+## How to use nodemon
+
+After installation, run your script like this:
+
+```bash
+nodemon index.js
+```
+
+Or if installed locally, in `package.json`:
+
+```json
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+}
+```
+
+Then run it with:
+
+```bash
+npm run dev
+```
+
+---
+
+## Bonus: nodemon config
+
+You can customize behavior with a `nodemon.json` file:
+
+```json
+{
+  "watch": ["src"],
+  "ext": "js,json",
+  "ignore": ["node_modules"],
+  "exec": "node src/app.js"
+}
+```
+
+---
+
+## Summary
+
+| Feature         | Description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| What is it?     | A dev tool that auto-restarts Node apps on file changes      |
+| How to install? | `npm install -g nodemon` or `npm install --save-dev nodemon` |
+| How to use?     | `nodemon app.js` or via `npm run dev`                        |
+| Why use it?     | Saves time and effort during development                     |
+
+---
+
+Would you like to set it up in your current project step by step?
