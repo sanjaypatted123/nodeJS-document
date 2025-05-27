@@ -1,0 +1,95 @@
+### 🧩 What is Templating in Web Development?
+
+**Templating** is the process of generating dynamic **HTML pages** on the server (or sometimes on the client) by combining **template files** with **data**.
+
+> In simple terms: A **template** is like a blank form, and you fill it with real data to produce a full webpage.
+
+---
+
+## 🏗️ Why Use Templates?
+
+In real-world applications, you often need to show user-specific or database-driven content:
+
+* A news website showing different headlines
+* A dashboard with user-specific data
+* An online store showing products from a database
+
+Instead of hardcoding HTML like:
+
+```html
+<h1>Hello, John!</h1>
+```
+
+You use a **template** like:
+
+```html
+<h1>Hello, <%= name %>!</h1>
+```
+
+…and inject data dynamically (`name = 'John'`) to get the final HTML.
+
+---
+
+## ⚙️ How Templating Works
+
+1. You create a **template file** (e.g. `.ejs`, `.hbs`, `.pug`)
+2. You pass **data** from your backend (Node.js/Express)
+3. The **templating engine** merges the data with the template
+4. It produces **complete HTML**, which is sent to the client
+
+---
+
+## 🧪 Example with EJS (Embedded JavaScript)
+
+**Template (views/greeting.ejs):**
+
+```html
+<h1>Hello, <%= user %>!</h1>
+```
+
+**Server (Express app):**
+
+```js
+app.set('view engine', 'ejs');
+
+app.get('/hello', (req, res) => {
+  res.render('greeting', { user: 'Alice' });
+});
+```
+
+**Output (what the browser sees):**
+
+```html
+<h1>Hello, Alice!</h1>
+```
+
+---
+
+## 🔍 Popular Templating Engines
+
+| Engine     | Syntax Style      | Extension | Notes                         |
+| ---------- | ----------------- | --------- | ----------------------------- |
+| EJS        | HTML + JS         | `.ejs`    | Simple and intuitive          |
+| Pug        | Indentation-based | `.pug`    | Clean but different from HTML |
+| Handlebars | Mustache-like     | `.hbs`    | Very readable, logic-less     |
+
+---
+
+## 📦 Templating vs Frontend Frameworks
+
+Templating is often **server-side rendering (SSR)**, used in traditional apps. In contrast:
+
+* React/Vue use **client-side rendering** (CSR) or SSR with hydration.
+* Templating engines are simpler and don’t require bundling or client JS.
+
+---
+
+## ✅ Benefits of Templating
+
+* **Reusability** – Write one template for many users or products
+* **Separation of concerns** – Logic (JS) is separate from view (HTML)
+* **Faster SSR performance** – Initial page loads faster than SPA
+
+---
+
+Let me know if you'd like to see a full example using EJS with Express or compare different templating engines!
