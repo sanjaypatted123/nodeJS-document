@@ -1,0 +1,310 @@
+
+---
+
+**What is a Token**
+
+A token is a string of text that represents a user's identity and access rights. Tokens are used to maintain secure communication between a client like a web browser and a server. Once a user logs in successfully, a token is generated and sent to the client. The client includes this token in future requests to access protected routes.
+
+---
+
+**What is JWT**
+
+JWT stands for JSON Web Token. It is a type of token that contains encoded JSON data and is used for authentication and authorization. A JWT is self-contained, meaning it includes all the information the server needs to verify the user.
+
+---
+
+**Structure of a JWT**
+
+A JWT is divided into three parts separated by periods. Each part is base64 encoded text. Although I will not use symbols, here are the three parts in plain text form:
+
+1 Header
+2 Payload
+3 Signature
+
+Let us understand each part in detail.
+
+---
+
+**One Header**
+
+The header contains metadata about the token, including the type of token and the signing algorithm used.
+
+Example of a decoded header:
+
+curly brace
+"alg" colon "HS256",
+"typ" colon "JWT"
+curly brace
+
+Here, HS256 means HMAC SHA 256 which is a hashing algorithm.
+
+---
+
+**Two Payload**
+
+The payload is the main content of the token. It includes claims. Claims are statements about an entity like the user and additional data.
+
+There are three types of claims:
+
+* Registered claims like iss for issuer, exp for expiration time, sub for subject
+* Public claims that you define and share between systems
+* Private claims that are used between parties and not shared publicly
+
+Example of a decoded payload:
+
+curly brace
+"sub" colon "user123",
+"name" colon "John Doe",
+"role" colon "admin",
+"exp" colon sixteen nine zero zero zero zero zero zero
+curly brace
+
+The exp field means the token expires at a specific timestamp.
+
+---
+
+**Three Signature**
+
+The signature is used to verify that the token was not altered. It is generated using the header, the payload, and a secret key. The server uses the same secret key to check if the token is valid. The client cannot generate this signature without the secret.
+
+The formula is:
+
+hash of base64 encoded header plus base64 encoded payload using secret key
+
+If someone tries to change the payload, the signature will no longer match.
+
+---
+
+**How JWT Works**
+
+1 The user logs in with a username and password
+2 The server verifies the credentials and creates a token
+3 The token is sent back to the client
+4 The client stores the token usually in local storage or session storage
+5 For each future request to protected routes, the client includes the token in the request header under the Authorization field
+6 The server receives the request, decodes the token, verifies the signature, and checks the expiration
+7 If the token is valid, the server responds with data. If not, it returns an error
+
+---
+
+**Advantages of JWT**
+
+* Stateless. No session is stored on the server
+* Scalable. Can be used with multiple servers and APIs
+* Portable. Can be used across domains
+* Self-contained. All information needed is inside the token
+
+---
+
+**Example Flow Without Symbols**
+
+Let us say John logs in to an app. The server checks his username and password. If valid, the server sends a JWT like the following structure in plain text:
+
+Header encoded
+Payload encoded
+Signature
+
+The token might look like this:
+
+ey header
+ey payload
+as signature
+
+John saves this token in his browser. When he makes a request to view his dashboard, the browser sends the token along with the request.
+
+The server gets the token, decodes it, and verifies the signature using its secret key. It sees that the token contains sub as user123 and role as admin and is not expired.
+
+It then sends back the dashboard data.
+
+---
+
+**Security Notes**
+
+* Always use HTTPS to prevent token interception
+* Keep the secret key safe on the server
+* Set expiration time to limit damage in case of leaks
+* Never store tokens in plain cookies without secure flags
+
+---
+
+**JWT in Code Terms**
+
+Here is how it would look conceptually in JavaScript terms without symbols:
+
+To generate a token:
+
+call jwt sign with user data comma secret key comma options
+
+To verify a token:
+
+call jwt verify with token comma secret key
+
+---
+
+---
+
+### ✅ BACKEND SETUP: Basic JWT Authentication in Express
+
+#### Step 1: Install required packages
+
+```bash
+npm init -y
+npm install express jsonwebtoken body-parser cors
+```
+
+#### Step 2: Create `server.js`
+
+```javascript
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+const app = express();
+const PORT = 3000;
+const SECRET_KEY = 'my_secret_key'; // Keep this safe
+
+app.use(cors());
+app.use(bodyParser.json());
+
+// Dummy user
+const user = {
+  username: 'john',
+  password: '1234', // Normally hashed
+};
+
+// Login Route
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  if (username === user.username && password === user.password) {
+    const payload = {
+      sub: user.username,
+      role: 'admin',
+    };
+
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1m' }); // 1-minute token
+    res.json({ token });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+// Protected Route
+app.get('/dashboard', (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'Token missing' });
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    res.json({ message: 'Welcome to the dashboard', user: decoded });
+  } catch (error) {
+    res.status(403).json({ error: 'Token invalid or expired' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+```
+
+---
+
+### ✅ FRONTEND: HTML and JavaScript
+
+#### `index.html`
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JWT Demo</title>
+</head>
+<body>
+  <h1>Login</h1>
+  <input type="text" id="username" placeholder="Username" /><br/>
+  <input type="password" id="password" placeholder="Password" /><br/>
+  <button onclick="login()">Login</button>
+
+  <h2 id="dashboard"></h2>
+
+  <script src="script.js"></script>
+</body>
+</html>
+```
+
+#### `script.js`
+
+```javascript
+let token = null;
+
+function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  fetch('http://localhost:3000/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, password })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.token) {
+        token = data.token;
+        alert('Login successful');
+        getDashboard();
+      } else {
+        alert('Login failed');
+      }
+    });
+}
+
+function getDashboard() {
+  fetch('http://localhost:3000/dashboard', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('dashboard').innerText = JSON.stringify(data, null, 2);
+    });
+}
+```
+
+---
+
+### ✅ Summary of the Flow
+
+1. User enters username and password
+2. `POST /login` is called, server returns a JWT if credentials are valid
+3. JWT is saved in a variable
+4. JWT is sent in headers as `Authorization: Bearer <token>` to access protected route `/dashboard`
+5. Server verifies and responds
+
+---
+
+### ✅ How the Token Looks (decoded)
+
+```json
+Header:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+Payload:
+{
+  "sub": "john",
+  "role": "admin",
+  "iat": 1234567890,
+  "exp": 1234567950
+}
+
+Signature:
+Based on the header, payload, and secret key
+```
