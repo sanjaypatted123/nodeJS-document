@@ -1,0 +1,49 @@
+"MVC stands for Model-View-Controller. It’s a design pattern used to organize 
+the code in an Express.js application. It separates the application into three main parts:
+* Model – handles the data and logic
+* View – handles what the user sees (UI)
+* Controller – handles the logic between the Model and the View"
+
+
+controller —>   model  ---> view 
+
+controller modifies or controls the model model updates the view ( UI ) what user actually sees
+
+ Use a Real-Life Analogy (Restaurant)
+"Think of a restaurant:
+* The Model is the kitchen – it stores and prepares the data (food).
+* The View is the plate – how the food is presented to the customer.
+* The Controller is the waiter – it takes the customer’s order, 
+    goes to the kitchen, gets the food, and brings it to the table.
+
+In the same way:
+* The user sends a request.
+* The controller processes it.
+* The model provides the data.
+* The view presents it back to the user."
+
+"In Express.js, we follow this structure:
+1. Model (models/)
+    * Stores and manages data (from a database or in memory).
+    * Example: User.getAll() returns a list of users.
+2. View (views/)
+    * Uses a template engine like EJS or Pug.
+    * Gets data from the controller and turns it into HTML.
+3. Controller (controllers/)
+    * Acts like a middleman.
+    * It receives requests, gets data from the model, and sends it to the view.
+4. Routes (routes/)
+    * Connects URL paths to controller functions.
+    * It listens for user actions like GET or POST."
+
+
+
+"Here's how the request-response cycle works:
+1. The user visits /users.
+2. The route (routes/userRoutes.js) matches the URL and calls the controller.
+3. The controller (controllers/userController.js) fetches data from the model (models/userModel.js).
+4. It sends that data to the view (views/user.ejs).
+5. The view turns that data into HTML and sends it back to the user."
+
+
+
