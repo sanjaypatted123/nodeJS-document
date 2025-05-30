@@ -27,3 +27,39 @@ There are many types, but the two most common are:
 * A unique identifier for each row/document (like id)
 
 
+
+1. Relational (SQL) Database
+✅ Strengths:
+* Data integrity with strong consistency (ACID).
+* Complex queries and JOINs.
+* Well-suited for applications requiring relationships (e.g., e-commerce, banking).
+* Mature ecosystem, widely adopted.
+❌ Weaknesses:
+* Schema changes can be difficult.
+* Can be less performant for unstructured or rapidly changing data.
+* Not ideal for large-scale distributed systems (though PostgreSQL and others have improved here).
+
+2. Non-Relational (NoSQL) Database
+✅ Strengths:
+* High scalability and performance.
+* Flexible schema: suitable for agile development and fast iterations.
+* Great for hierarchical or nested data (like JSON).
+* Often better for big data and real-time applications.
+❌ Weaknesses:
+* Weaker support for relationships.
+* Data duplication (denormalization) is common.
+* Inconsistent support for transactions (though MongoDB now supports multi-document ACID).
+
+
+When to Choose What?
+Use Relational (SQL) When:
+* Data has clear structure and relationships.
+* You need complex queries and analytics.
+* You need data consistency (banking, inventory, accounting).
+* You need to enforce constraints (e.g., required fields, foreign keys).
+
+ Use Non-Relational (NoSQL) When:
+* You need fast, flexible development.
+* Data is semi-structured or unstructured (like logs, JSON).
+* You need to store large volumes of data (e.g., social media posts).
+* You want to scale horizontally (add more servers easily).
