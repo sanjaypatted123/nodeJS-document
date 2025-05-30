@@ -1,0 +1,177 @@
+### Templating in Express.js — Complete Beginner-Friendly Guide
+
+Templating in Express.js refers to **dynamically generating HTML pages** on the server using **template engines**. Instead of hardcoding HTML pages, you use placeholders and logic within templates, and Express fills in data and renders the final HTML.
+
+---
+
+## 🧠 Why Use Templating in Express?
+
+* ✅ **Dynamic Content**: Serve different data to different users (e.g., user profiles, blog posts).
+* ✅ **Code Reusability**: Avoid repeating HTML structures with layouts, includes, and partials.
+* ✅ **Separation of Concerns**: Keeps logic (JavaScript) separate from view (HTML).
+
+---
+
+## 🧰 Popular Template Engines
+
+Express works with many template engines. Popular ones include:
+
+| Template Engine | Language Syntax | Features               |
+| --------------- | --------------- | ---------------------- |
+| EJS             | HTML + JS       | Simple, logic-friendly |
+| Pug (Jade)      | Indented syntax | Minimal, fast          |
+| Handlebars      | Mustache-style  | Logic-less, safe       |
+
+We’ll focus on **EJS** (Embedded JavaScript) as it’s beginner-friendly and similar to regular HTML.
+
+---
+
+## 🛠️ Setup EJS with Express
+
+### 1. Install EJS
+
+```bash
+npm install ejs
+```
+
+### 2. Set EJS as the View Engine
+
+```js
+const express = require('express');
+const app = express();
+
+app.set('view engine', 'ejs'); // use EJS as the template engine
+app.set('views', './views');   // set folder for templates
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+```
+
+---
+
+## 📁 Project Structure Example
+
+```
+myapp/
+├── views/
+│   ├── index.ejs
+│   ├── about.ejs
+├── public/
+│   └── style.css
+├── app.js
+```
+
+---
+
+## ✍️ Create a Template (views/index.ejs)
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>Welcome, <%= name %>!</h1>
+</body>
+</html>
+```
+
+> `<%= %>` is used to output escaped data.
+> `<%- %>` outputs unescaped HTML.
+> `<% %>` allows plain JS (e.g., loops, if-else).
+
+---
+
+## 🔁 Render Template from Express
+
+```js
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Home Page', name: 'Alice' });
+});
+```
+
+---
+
+## 🔁 Example with Loop and Conditionals
+
+```ejs
+<ul>
+  <% if (items.length > 0) { %>
+    <% items.forEach(item => { %>
+      <li><%= item %></li>
+    <% }) %>
+  <% } else { %>
+    <li>No items found.</li>
+  <% } %>
+</ul>
+```
+
+From Express:
+
+```js
+app.get('/list', (req, res) => {
+  res.render('list', { items: ['Apple', 'Banana', 'Cherry'] });
+});
+```
+
+---
+
+## 📦 Serve Static Files (CSS, images, JS)
+
+```js
+app.use(express.static('public'));
+```
+
+Then in your `.ejs`:
+
+```html
+<link rel="stylesheet" href="/style.css">
+```
+
+---
+
+## 🔗 Layouts and Partials (Optional with EJS)
+
+EJS doesn’t support layouts natively, but you can include partials:
+
+### Example: `views/header.ejs`
+
+```html
+<header><h1><%= title %></h1></header>
+```
+
+### In `index.ejs`:
+
+```ejs
+<%- include('header') %>
+<p>Welcome to the homepage</p>
+```
+
+---
+
+## 🧪 Test in Browser
+
+Start server:
+
+```bash
+node app.js
+```
+
+Visit: `http://localhost:3000/`
+
+---
+
+## 🧠 Summary
+
+| Concept                         | Purpose                      |
+| ------------------------------- | ---------------------------- |
+| `app.set('view engine', 'ejs')` | Set EJS as template engine   |
+| `res.render('file', data)`      | Renders EJS file with data   |
+| `<%= %>`                        | Output escaped variable      |
+| `<%- %>`                        | Output unescaped HTML        |
+| `<% %>`                         | Write JS logic (e.g., loops) |
+| `include('file')`               | Import partial EJS template  |
+
+---
