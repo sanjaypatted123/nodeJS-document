@@ -1,6 +1,9 @@
 ### Templating in Express.js — Complete Beginner-Friendly Guide
 
-Templating in Express.js refers to **dynamically generating HTML pages** on the server using **template engines**. Instead of hardcoding HTML pages, you use placeholders and logic within templates, and Express fills in data and renders the final HTML.
+Templating in Express.js refers to **dynamically generating HTML pages** on the 
+server using **template engines**. 
+Instead of hardcoding HTML pages, you use placeholders and logic within templates, 
+and Express fills in data and renders the final HTML.
 
 ---
 

@@ -1,0 +1,29 @@
+What Is a Database?
+A database is an organized collection of data that can be easily accessed, managed, and updated. It allows applications to store, retrieve, modify, and delete data efficiently.
+
+🔍 Types of Databases
+There are many types, but the two most common are:
+1. Relational Databases (SQL)
+* Structured data in tables (rows and columns).
+* Use Structured Query Language (SQL) to query data.
+* Examples: MySQL, PostgreSQL, SQLite, Microsoft SQL Server.
+* Good for structured data and complex queries.
+2. Non-Relational Databases (NoSQL)
+* Flexible schema (no fixed table structure).
+* Designed for unstructured or semi-structured data.
+* Examples: MongoDB, Firebase, Cassandra, Redis.
+* Great for scalability and flexible data models.
+
+🧠 Basic Concepts
+1. Table (in SQL) / Collection (in NoSQL)
+* Where data is stored.
+* Table = SQL; Collection = MongoDB
+2. Row / Document
+* A single entry in a table or collection.
+* Row = SQL; Document = MongoDB
+3. Column / Field
+* A specific piece of data (like a name, age, etc.)
+4. Primary Key
+* A unique identifier for each row/document (like id)
+
+
