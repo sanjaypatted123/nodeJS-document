@@ -41,3 +41,193 @@ Insert, read, update, and delete data (often called CRUD operations)
 Query and filter data using specific conditions
 
 
+Sure! Here's a clear and structured guide to **basic SQL syntax** – ideal for beginners working with databases like **PostgreSQL**, **MySQL**, or **SQLite**.
+
+---
+
+## ✅ What is SQL?
+
+**SQL** stands for **Structured Query Language**. It is used to:
+
+* **Create** and **manage databases and tables**
+* **Insert**, **read**, **update**, and **delete** data (often called CRUD operations)
+* **Query** and **filter** data using specific conditions
+
+---
+
+## 📘 1. **Basic SQL Statements**
+
+### 🔹 CREATE TABLE
+
+Used to create a new table.
+
+```sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100),
+  age INT,
+  email VARCHAR(100)
+);
+```
+
+| Keyword       | Meaning                               |
+| ------------- | ------------------------------------- |
+| `SERIAL`      | Auto-incrementing number (PostgreSQL) |
+| `PRIMARY KEY` | Uniquely identifies each row          |
+| `VARCHAR(n)`  | Text up to `n` characters             |
+| `INT`         | Integer number                        |
+
+---
+
+### 🔹 INSERT INTO
+
+Used to add data into a table.
+
+```sql
+INSERT INTO users (name, age, email)
+VALUES ('Alice', 25, 'alice@example.com');
+```
+
+---
+
+### 🔹 SELECT
+
+Used to **read or retrieve** data.
+
+```sql
+SELECT * FROM users;
+```
+
+* `*` means all columns.
+* You can specify columns:
+
+```sql
+SELECT name, email FROM users;
+```
+
+You can filter data using **WHERE**:
+
+```sql
+SELECT * FROM users WHERE age > 21;
+```
+
+---
+
+### 🔹 UPDATE
+
+Used to **modify existing records**.
+
+```sql
+UPDATE users
+SET age = 30
+WHERE name = 'Alice';
+```
+
+---
+
+### 🔹 DELETE
+
+Used to **remove data** from a table.
+
+```sql
+DELETE FROM users WHERE age < 18;
+```
+
+---
+
+## 📘 2. **Filtering and Sorting**
+
+### 🔹 WHERE
+
+Filter rows:
+
+```sql
+SELECT * FROM users WHERE age >= 18;
+```
+
+### 🔹 ORDER BY
+
+Sort results:
+
+```sql
+SELECT * FROM users ORDER BY age DESC;
+```
+
+* `ASC` = ascending (default)
+* `DESC` = descending
+
+### 🔹 LIMIT
+
+Limit the number of rows returned:
+
+```sql
+SELECT * FROM users LIMIT 5;
+```
+
+---
+
+## 📘 3. **Aggregate Functions**
+
+Used for calculations on groups of rows.
+
+| Function  | Description    |
+| --------- | -------------- |
+| `COUNT()` | Count rows     |
+| `SUM()`   | Add values     |
+| `AVG()`   | Average value  |
+| `MAX()`   | Largest value  |
+| `MIN()`   | Smallest value |
+
+Example:
+
+```sql
+SELECT AVG(age) FROM users;
+```
+
+---
+
+## 📘 4. **GROUP BY**
+
+Used with aggregate functions to group results.
+
+```sql
+SELECT age, COUNT(*) FROM users
+GROUP BY age;
+```
+
+---
+
+## 📘 5. **Joins** (Basic)
+
+Used to combine rows from two or more tables based on a related column.
+
+Example:
+
+```sql
+SELECT orders.id, users.name
+FROM orders
+JOIN users ON orders.user_id = users.id;
+```
+
+---
+
+## 📝 Summary Table
+
+| SQL Keyword    | Purpose          |
+| -------------- | ---------------- |
+| `CREATE TABLE` | Create new table |
+| `INSERT INTO`  | Add data         |
+| `SELECT`       | Read data        |
+| `WHERE`        | Filter rows      |
+| `UPDATE`       | Modify data      |
+| `DELETE`       | Remove data      |
+| `ORDER BY`     | Sort data        |
+| `LIMIT`        | Limit results    |
+| `GROUP BY`     | Group rows       |
+| `JOIN`         | Combine tables   |
+
+---
+
+
+
+
