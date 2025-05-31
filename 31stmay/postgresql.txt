@@ -1,0 +1,43 @@
+
+PostgreSQL is an advanced relational database system.
+PostgreSQL supports both relational (SQL) and non-relational (JSON) queries.
+PostgreSQL is free and open-source.
+
+PostgreSQL Introduction
+PostgreSQL is an free open-source database system that supports both relational (SQL) and non-relational (JSON) queries.
+PostgreSQL is a back-end database for dynamic websites and web applications.
+PostgreSQL supports the most important programming languages:
+* Python
+* Java
+* C/C++
+* C#
+* Node.js
+* Go
+* Ruby
+* Perl
+* Tcl
+PostgreSQL supports basically all features that other database management systems support.
+
+
+
+Why Choose PostgreSQL?
+Choose PostgreSQL if you want:
+
+A free, reliable, and powerful SQL database.
+
+Strong support for data integrity, transactions, and complex queries.
+
+Advanced features like custom data types, full-text search, JSON support.
+
+A database that can scale from small apps to large enterprise systems.
+
+
+SQL stands for Structured Query Language. It is used to:
+
+Create and manage databases and tables
+
+Insert, read, update, and delete data (often called CRUD operations)
+
+Query and filter data using specific conditions
+
+
