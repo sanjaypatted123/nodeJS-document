@@ -1,0 +1,406 @@
+Absolutely! Here's a **line-by-line explanation** for all **10 Node.js practice examples**—from basic to intermediate level—so you understand exactly what's happening in each program.
+
+---
+
+## ✅ 1. **Basic HTTP Server**
+
+```js
+const http = require('http');
+```
+
+> Imports the built-in `http` module to create and manage HTTP servers.
+
+```js
+const server = http.createServer((req, res) => {
+```
+
+> Creates the server and defines a callback for handling every incoming request.
+
+```js
+  res.end('Hello, Node.js!');
+});
+```
+
+> Sends the response text to the client and ends the response.
+
+```js
+server.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+```
+
+> Starts the server on port `3000`. Once it's running, log a message.
+
+---
+
+## ✅ 2. **Read a File using `fs`**
+
+```js
+const fs = require('fs');
+```
+
+> Load the File System module to work with files.
+
+```js
+fs.readFile('example.txt', 'utf8', (err, data) => {
+```
+
+> Reads the file named `example.txt` with UTF-8 encoding. The callback gets error or data.
+
+```js
+  if (err) throw err;
+```
+
+> If an error occurs (e.g., file not found), throw the error to stop execution.
+
+```js
+  console.log(data);
+});
+```
+
+> Otherwise, print the file's contents.
+
+---
+
+## ✅ 3. **Write to a File**
+
+```js
+const fs = require('fs');
+```
+
+> Load the `fs` module.
+
+```js
+fs.writeFile('output.txt', 'Hello from Node.js!', (err) => {
+```
+
+> Write the string into `output.txt`. If the file doesn't exist, it's created.
+
+```js
+  if (err) throw err;
+```
+
+> Throw error if something goes wrong during writing.
+
+```js
+  console.log('File written successfully');
+});
+```
+
+> Print success message if writing was successful.
+
+---
+
+## ✅ 4. **CLI Input using `readline`**
+
+```js
+const readline = require('readline');
+```
+
+> Import `readline` module to handle input/output via the terminal.
+
+```js
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+```
+
+> Create an interface for standard input and output.
+
+```js
+rl.question('What is your name? ', (name) => {
+```
+
+> Ask a question. When user types input and hits enter, the callback runs with that input.
+
+```js
+  console.log(`Hello, ${name}!`);
+  rl.close();
+});
+```
+
+> Greet the user with their name and close the interface to finish the program.
+
+---
+
+## ✅ 5. **Simple Event Emitter**
+
+```js
+const EventEmitter = require('events');
+```
+
+> Import Node.js's events module for handling custom events.
+
+```js
+const emitter = new EventEmitter();
+```
+
+> Create a new event emitter object to manage our custom events.
+
+```js
+emitter.on('greet', () => {
+  console.log('Hello from event emitter!');
+});
+```
+
+> Register a listener for the event named `greet`.
+
+```js
+emitter.emit('greet');
+```
+
+> Trigger the `greet` event. This will call the callback function above.
+
+---
+
+## 🟡 6. **Basic Routing using `http`**
+
+```js
+const http = require('http');
+```
+
+> Import the HTTP module.
+
+```js
+const server = http.createServer((req, res) => {
+```
+
+> Create the HTTP server and listen for incoming requests.
+
+```js
+  if (req.url === '/') res.end('Home Page');
+```
+
+> If the request URL is `/`, respond with "Home Page".
+
+```js
+  else if (req.url === '/about') res.end('About Page');
+```
+
+> If the request URL is `/about`, respond with "About Page".
+
+```js
+  else res.end('404 Not Found');
+});
+```
+
+> For any other URL, return a 404 message.
+
+```js
+server.listen(3000);
+```
+
+> Start listening on port 3000.
+
+---
+
+## 🟡 7. **Simple JSON API**
+
+```js
+const http = require('http');
+```
+
+> Import the HTTP module.
+
+```js
+const data = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' }
+];
+```
+
+> Define some sample JSON data to serve.
+
+```js
+const server = http.createServer((req, res) => {
+```
+
+> Create a server.
+
+```js
+  if (req.url === '/users') {
+```
+
+> Check if the request is for the `/users` route.
+
+```js
+    res.setHeader('Content-Type', 'application/json');
+```
+
+> Set the response type to JSON.
+
+```js
+    res.end(JSON.stringify(data));
+```
+
+> Convert the data array to JSON string and send it.
+
+```js
+  } else {
+    res.end('Welcome');
+  }
+});
+```
+
+> If the route is not `/users`, respond with a default message.
+
+```js
+server.listen(3000);
+```
+
+> Start the server.
+
+---
+
+## 🟡 8. **Serve Static HTML using `fs` and `path`**
+
+```js
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+```
+
+> Import required modules: HTTP, File System, and Path utilities.
+
+```js
+const server = http.createServer((req, res) => {
+```
+
+> Start a server.
+
+```js
+  const filePath = path.join(__dirname, 'index.html');
+```
+
+> Create an absolute path to `index.html` in the current folder.
+
+```js
+  fs.readFile(filePath, (err, content) => {
+```
+
+> Read the HTML file.
+
+```js
+    if (err) return res.end('Error loading file');
+```
+
+> If an error occurs, send an error message to the client.
+
+```js
+    res.setHeader('Content-Type', 'text/html');
+    res.end(content);
+  });
+});
+```
+
+> Set content-type to HTML and send the file content as response.
+
+```js
+server.listen(3000);
+```
+
+> Start listening on port 3000.
+
+---
+
+## 🟡 9. **Create a Simple Logger with `fs.appendFile`**
+
+```js
+const fs = require('fs');
+```
+
+> Import the file system module.
+
+```js
+function log(message) {
+```
+
+> Define a logging function that takes a message as input.
+
+```js
+  const logMessage = `${new Date().toISOString()} - ${message}\n`;
+```
+
+> Add a timestamp to the message.
+
+```js
+  fs.appendFile('log.txt', logMessage, (err) => {
+```
+
+> Append the message to `log.txt`. It creates the file if not present.
+
+```js
+    if (err) console.error('Failed to write log');
+  });
+}
+```
+
+> If an error happens, log it to the console.
+
+```js
+log('Server started');
+```
+
+> Call the log function with a sample message.
+
+---
+
+## 🟡 10. **Serve JSON File Content**
+
+```js
+const http = require('http');
+const fs = require('fs');
+```
+
+> Import HTTP and File System modules.
+
+```js
+const server = http.createServer((req, res) => {
+```
+
+> Start an HTTP server.
+
+```js
+  if (req.url === '/data') {
+```
+
+> Check if the URL is `/data`.
+
+```js
+    fs.readFile('data.json', 'utf8', (err, data) => {
+```
+
+> Read the JSON file with proper encoding.
+
+```js
+      if (err) {
+        res.statusCode = 500;
+        res.end('Internal Server Error');
+      } else {
+```
+
+> If there's an error, return 500 error message.
+
+```js
+        res.setHeader('Content-Type', 'application/json');
+        res.end(data);
+      }
+    });
+  } else {
+    res.end('Node.js JSON Server');
+  }
+});
+```
+
+> If not `/data`, return default welcome text.
+
+```js
+server.listen(3000);
+```
+
+> Start the server.
+
+---
+
+Let me know when you're ready for **advanced examples** (e.g., Express app, JWT, file uploads, REST API structure, middleware, etc.).
