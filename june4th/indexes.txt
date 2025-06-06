@@ -9,6 +9,28 @@ Perfect, Sanjay. Let’s start from the basics and build up — all focused on *
 * Without indexes, PostgreSQL **scans the whole table** — slow for large datasets.
 
 ---
+Why Use Indexes?
+Without an index:
+
+PostgreSQL scans each row in the table to find matching rows (called a sequential scan).
+
+This is slow when the table has thousands or millions of rows.
+
+With an index:
+
+PostgreSQL can jump directly to the rows that match your condition, using much less CPU and I/O.
+
+
+| Index Type                           | Use Case                                                                   |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| **B-tree (default)**                 | Most common. Good for `=`, `<`, `>`, `BETWEEN`, `ORDER BY`.                |
+| **Hash**                             | Fast for `=` operations, but rarely used alone (requires PostgreSQL ≥ 10). |
+| **GIN (Generalized Inverted Index)** | Used for arrays, full-text search, JSONB.                                  |
+| **GiST (Generalized Search Tree)**   | Spatial data, geometric shapes, custom types.                              |
+| **BRIN (Block Range Index)**         | Very large tables where data is stored in sorted blocks (e.g., logs).      |
+| **SP-GiST**                          | Used for hierarchical or non-balanced tree structures (e.g., IP ranges).   |
+
+
 
 ### 🛠️ Why Indexes Matter in Node.js Apps
 
