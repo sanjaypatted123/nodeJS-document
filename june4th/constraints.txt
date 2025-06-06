@@ -1,0 +1,259 @@
+
+---
+
+## 🧠 What Are Constraints?
+
+**Constraints** are rules you define on a column or a table to restrict the type of data that can be inserted. PostgreSQL enforces these rules when performing `INSERT`, `UPDATE`, or `DELETE` operations.
+
+---
+
+## 🧱 Types of Constraints in PostgreSQL
+
+Here’s a list of constraints with deep explanations:
+
+---
+
+### 1. **NOT NULL**
+
+> Ensures that a column **cannot have NULL** values.
+
+```sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL
+);
+```
+
+✅ `name` must be provided, otherwise an error will occur.
+
+🔍 **Why use it?** To ensure critical columns (like `username`, `email`) are always filled.
+
+---
+
+### 2. **UNIQUE**
+
+> Ensures that **all values in a column or group of columns are distinct**.
+
+```sql
+CREATE TABLE accounts (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE
+);
+```
+
+✅ No two rows can have the same email.
+
+🔥 You can also apply it on multiple columns together:
+
+```sql
+CREATE TABLE products (
+  product_id SERIAL PRIMARY KEY,
+  name TEXT,
+  category TEXT,
+  UNIQUE(name, category)
+);
+```
+
+This ensures that the same product name doesn’t repeat **within the same category**.
+
+---
+
+### 3. **PRIMARY KEY**
+
+> Combines **NOT NULL + UNIQUE**. Used to uniquely identify rows.
+
+```sql
+CREATE TABLE books (
+  isbn VARCHAR(13) PRIMARY KEY,
+  title TEXT
+);
+```
+
+* Only one primary key is allowed per table.
+* Can be a **composite key** too:
+
+```sql
+CREATE TABLE enrollment (
+  student_id INT,
+  course_id INT,
+  PRIMARY KEY (student_id, course_id)
+);
+```
+
+---
+
+### 4. **FOREIGN KEY**
+
+> Establishes a **relationship between two tables**. Ensures that a value in one column exists in another table.
+
+```sql
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  customer_id INT REFERENCES customers(id)
+);
+```
+
+Or more explicitly:
+
+```sql
+FOREIGN KEY (customer_id) REFERENCES customers(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+```
+
+🔁 **ON DELETE/ON UPDATE Options**:
+
+* `CASCADE`: Delete/update the dependent rows.
+* `SET NULL`: Set foreign key to null.
+* `RESTRICT`: Prevent deletion if dependent records exist.
+* `NO ACTION`: Same as restrict but checks after statement.
+
+---
+
+### 5. **CHECK**
+
+> Ensures that values in a column **satisfy a specific condition**.
+
+```sql
+CREATE TABLE employees (
+  id SERIAL PRIMARY KEY,
+  age INT CHECK (age >= 18)
+);
+```
+
+You can also use expressions:
+
+```sql
+CHECK (salary > 0 AND bonus <= salary)
+```
+
+📌 Great for **range checks, logical conditions**, etc.
+
+---
+
+### 6. **EXCLUSION Constraint**
+
+> Ensures that **no two rows** conflict **based on a specific condition** using operators.
+
+```sql
+CREATE EXTENSION btree_gist;
+
+CREATE TABLE meetings (
+  id SERIAL PRIMARY KEY,
+  room TEXT,
+  during TSRANGE,
+  EXCLUDE USING gist (
+    room WITH =,
+    during WITH &&
+  )
+);
+```
+
+🔍 Meaning: no overlapping meeting times (`&&`) are allowed in the same `room`.
+
+This is **advanced** and mostly used with **range types**, **GIS**, **scheduling**, etc.
+
+---
+
+## 🧮 Constraint Levels
+
+| Level      | Constraint Applies To                  |
+| ---------- | -------------------------------------- |
+| **Column** | Inline constraint on one column        |
+| **Table**  | Multi-column or foreign key constraint |
+
+✅ You can define constraints either:
+
+**At column level:**
+
+```sql
+name TEXT NOT NULL
+```
+
+**At table level:**
+
+```sql
+CHECK (age >= 18)
+```
+
+---
+
+## ⚠️ Constraint Violations
+
+When constraints are violated, PostgreSQL throws an error:
+
+```bash
+ERROR:  null value in column "email" violates not-null constraint
+```
+
+You can also name your constraints to identify them easily:
+
+```sql
+email TEXT CONSTRAINT email_unique UNIQUE
+```
+
+---
+
+## 🧰 ALTER TABLE – Adding Constraints Later
+
+You can add constraints even after table creation:
+
+```sql
+ALTER TABLE users ADD CONSTRAINT email_unique UNIQUE (email);
+ALTER TABLE employees ADD CHECK (age >= 18);
+```
+
+You can also **drop** constraints:
+
+```sql
+ALTER TABLE employees DROP CONSTRAINT employees_age_check;
+```
+
+---
+
+## 🧪 Validating Data Without Locking Writes
+
+```sql
+ALTER TABLE users ADD CONSTRAINT email_unique UNIQUE (email) NOT VALID;
+ALTER TABLE users VALIDATE CONSTRAINT email_unique;
+```
+
+✅ Useful for large tables—allows reads/writes during validation.
+
+---
+
+## 🔒 Deferrable Constraints
+
+By default, PostgreSQL enforces constraints **immediately** after a statement. But you can defer them to end of a transaction:
+
+```sql
+DEFERRABLE INITIALLY DEFERRED
+```
+
+Example:
+
+```sql
+CREATE TABLE transfer (
+  id SERIAL PRIMARY KEY,
+  from_account INT,
+  to_account INT,
+  CHECK (from_account <> to_account) DEFERRABLE INITIALLY DEFERRED
+);
+```
+
+Useful in financial transactions, circular foreign keys, etc.
+
+---
+
+## 🧑‍💻 Summary Table
+
+| Constraint  | Ensures                     | Notes                        |
+| ----------- | --------------------------- | ---------------------------- |
+| NOT NULL    | Value must not be NULL      | Critical for required fields |
+| UNIQUE      | No duplicates allowed       | Can be composite             |
+| PRIMARY KEY | Uniquely identifies a row   | NOT NULL + UNIQUE            |
+| FOREIGN KEY | Enforces relationships      | Use ON DELETE/UPDATE rules   |
+| CHECK       | Must meet condition         | Great for business rules     |
+| EXCLUDE     | No two rows match condition | Powerful for advanced cases  |
+
+---
