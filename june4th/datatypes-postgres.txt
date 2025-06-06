@@ -6,6 +6,11 @@ Here is a **deep and complete explanation** of **PostgreSQL data types**, coveri
 * Special features and internal details
 * Real-world usage examples
 
+The following types (or spellings thereof) are specified by SQL: bigint, bit, bit vary-
+ing, boolean, char, character varying, character, varchar, date, dou-
+ble precision, integer, interval, numeric, decimal, real, smallint,
+time (with or without time zone), timestamp (with or without time zone), xml.
+
 ---
 
 ## 🔢 1. Numeric / Number Data Types
