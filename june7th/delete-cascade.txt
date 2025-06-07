@@ -1,0 +1,45 @@
+Now comes the important part:
+🚨 What happens if you DELETE data from one of these tables?
+Case 1: Deleting from the Parent Table (authors)
+When you delete an author, you have to decide what should happen to the books related to that author. This is handled using ON DELETE actions in the foreign key constraint.
+
+🔄 1. ON DELETE CASCADE
+If defined like this:
+
+
+author_id INT REFERENCES authors(author_id) ON DELETE CASCADE
+Then:
+
+If you delete an author from authors,
+
+All related rows in books will also be automatically deleted.
+
+📌 Use this when the child data has no meaning without the parent.
+
+🔄 2. ON DELETE SET NULL
+
+author_id INT REFERENCES authors(author_id) ON DELETE SET NULL
+Then:
+
+When you delete the author,
+
+The author_id column in books will be set to NULL (book still exists, but no author assigned).
+
+📌 Use this if books can remain without a known author.
+
+🔄 3. ON DELETE RESTRICT (default if you don't specify)
+
+author_id INT REFERENCES authors(author_id) ON DELETE RESTRICT
+Then:
+
+PostgreSQL will not allow deletion of the author if books referencing them exist.
+
+You’ll get a foreign key violation error.
+
+📌 Use this when you want to prevent orphan records.
+
+🔄 4. ON DELETE NO ACTION
+Almost same as RESTRICT, but enforcement happens at the end of the statement.
+
+📌 Used internally by PostgreSQL in many cases.
+
