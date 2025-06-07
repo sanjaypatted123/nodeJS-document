@@ -1,5 +1,6 @@
 Now comes the important part:
 🚨 What happens if you DELETE data from one of these tables?
+
 Case 1: Deleting from the Parent Table (authors)
 When you delete an author, you have to decide what should happen to the books related to that author. This is handled using ON DELETE actions in the foreign key constraint.
 
@@ -43,3 +44,8 @@ Almost same as RESTRICT, but enforcement happens at the end of the statement.
 
 📌 Used internally by PostgreSQL in many cases.
 
+
+Case 2: Deleting from the Child Table (books)
+Deleting a book has no effect on the authors table.
+
+Only the child is removed; the parent stays.
