@@ -1,0 +1,217 @@
+---
+
+### 🧱 What are Constraints?
+
+Constraints **restrict or control** the values that can be inserted into a column or table. They help in:
+
+* Preventing invalid data
+* Enforcing business rules
+* Supporting database normalization
+
+---
+
+### 🔹 Types of Constraints in PostgreSQL (with examples)
+
+| Constraint    | Description                                                       | Example                                   |
+| ------------- | ----------------------------------------------------------------- | ----------------------------------------- |
+| `NOT NULL`    | Ensures the column can't have NULL values.                        | `name TEXT NOT NULL`                      |
+| `UNIQUE`      | Ensures all values in a column are different.                     | `email TEXT UNIQUE`                       |
+| `PRIMARY KEY` | Uniquely identifies each row. Combination of `NOT NULL + UNIQUE`. | `id SERIAL PRIMARY KEY`                   |
+| `FOREIGN KEY` | Enforces a link between two tables.                               | `user_id INT REFERENCES users(id)`        |
+| `CHECK`       | Ensures a condition is met.                                       | `age INT CHECK (age >= 18)`               |
+| `DEFAULT`     | Provides a default value if none is supplied.                     | `status TEXT DEFAULT 'active'`            |
+| `EXCLUDE`     | Like UNIQUE, but with support for complex conditions.             | Used with range types or geometric types. |
+
+---
+
+### 🧪 1. `NOT NULL`
+
+Prevents inserting null values in the column.
+
+```sql
+CREATE TABLE users (
+  id SERIAL,
+  name TEXT NOT NULL
+);
+```
+
+**If you try:**
+
+```sql
+INSERT INTO users (name) VALUES (NULL);
+```
+
+❌ Error: null value in column "name" violates not-null constraint
+
+---
+
+### 🧪 2. `UNIQUE`
+
+Ensures every value in the column is unique (no duplicates).
+
+```sql
+CREATE TABLE users (
+  email TEXT UNIQUE
+);
+```
+
+You can also create a composite unique key:
+
+```sql
+CREATE TABLE enrollments (
+  student_id INT,
+  course_id INT,
+  UNIQUE (student_id, course_id)
+);
+```
+
+---
+
+### 🧪 3. `PRIMARY KEY`
+
+Ensures uniqueness + not null. Usually used on ID columns.
+
+```sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE
+);
+```
+
+Behind the scenes, PostgreSQL creates a **unique B-tree index** on that column.
+
+You can also do composite primary key:
+
+```sql
+CREATE TABLE order_items (
+  order_id INT,
+  product_id INT,
+  PRIMARY KEY (order_id, product_id)
+);
+```
+
+---
+
+### 🧪 4. `FOREIGN KEY`
+
+Creates a relationship between two tables. Ensures **referential integrity**.
+
+```sql
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users(id)
+);
+```
+
+You can also define what should happen **on delete or update**:
+
+```sql
+user_id INT REFERENCES users(id) ON DELETE CASCADE
+```
+
+Options:
+
+* `ON DELETE CASCADE` – deletes related rows
+* `ON DELETE SET NULL` – sets the foreign key to null
+* `ON DELETE RESTRICT` – blocks delete if related rows exist
+* `ON DELETE NO ACTION` – same as restrict but deferred
+
+---
+
+### 🧪 5. `CHECK`
+
+Ensures custom condition is true.
+
+```sql
+CREATE TABLE employees (
+  age INT CHECK (age >= 18)
+);
+```
+
+Advanced:
+
+```sql
+CHECK (salary > 0 AND salary < 100000)
+```
+
+---
+
+### 🧪 6. `DEFAULT`
+
+Assigns a default value if no value is given.
+
+```sql
+CREATE TABLE products (
+  status TEXT DEFAULT 'available'
+);
+```
+
+Then:
+
+```sql
+INSERT INTO products DEFAULT VALUES;
+-- status = 'available'
+```
+
+---
+
+### 🧪 7. `EXCLUDE` (Advanced)
+
+Allows defining complex uniqueness constraints using operators.
+
+```sql
+CREATE EXTENSION btree_gist;
+
+CREATE TABLE bookings (
+  room_id INT,
+  during tsrange,
+  EXCLUDE USING gist (room_id WITH =, during WITH &&)
+);
+```
+
+Explanation: Prevents overlapping room bookings. `&&` checks overlapping time ranges.
+
+---
+
+### 📌 How Constraints Help:
+
+* Enforce **business rules** (like min age or valid categories)
+* Avoid **duplicate records**
+* Keep **relationships consistent**
+* Reduce errors in application logic
+* Help **query performance** (UNIQUE creates indexes!)
+
+---
+
+### ⚠️ Handling Constraint Violations in Node.js
+
+When you try inserting/updating violating data via Node.js + PostgreSQL, you’ll get an error like:
+
+```bash
+error: duplicate key value violates unique constraint
+```
+
+You can catch and handle it in Node.js:
+
+```js
+try {
+  await client.query('INSERT INTO users (email) VALUES ($1)', ['existing@email.com']);
+} catch (err) {
+  if (err.code === '23505') {
+    console.error('Duplicate email!');
+  }
+}
+```
+
+---
+
+### 🧠 Pro Tip: Constraint Error Codes
+
+| Error Code | Meaning                 |
+| ---------- | ----------------------- |
+| 23505      | unique\_violation       |
+| 23503      | foreign\_key\_violation |
+| 23514      | check\_violation        |
+| 23502      | not\_null\_violation    |
+
+---
