@@ -1,0 +1,138 @@
+Sure! Below are clean and beginner-friendly notes on **Sequelize**, with **no special symbols** or formatting characters.
+
+---
+
+Sequelize is a Node.js library used to interact with SQL databases using JavaScript. It is an Object Relational Mapping (ORM) tool.
+
+---
+
+What Sequelize does:
+
+* Connects Node.js to SQL databases like PostgreSQL, MySQL, and others.
+* Allows you to define models which represent database tables.
+* Lets you perform actions like insert, update, delete, and query using simple JavaScript code.
+
+---
+
+How to install Sequelize for PostgreSQL:
+
+Run the following command in your project directory
+
+npm install sequelize pg pg-hstore
+
+---
+
+How to set up Sequelize connection:
+
+Example code
+
+const { Sequelize, DataTypes } = require('sequelize')
+
+const sequelize = new Sequelize(
+'your\_database\_name',
+'your\_database\_username',
+'your\_database\_password',
+{
+host: 'localhost',
+dialect: 'postgres'
+}
+)
+
+---
+
+Define a model
+
+A model represents a table
+
+const User = sequelize.define('User', {
+name: {
+type: DataTypes.STRING,
+allowNull: false
+},
+age: {
+type: DataTypes.INTEGER
+}
+})
+
+---
+
+Syncing the model
+
+This creates the table in the database
+
+sequelize.sync()
+
+---
+
+Insert data
+
+User.create({
+name: 'Sanjay',
+age: 25
+})
+
+---
+
+Find all users
+
+User.findAll().then(users => {
+console.log(users)
+})
+
+---
+
+Update a user
+
+User.update(
+{ age: 26 },
+{ where: { name: 'Sanjay' } }
+)
+
+---
+
+Delete a user
+
+User.destroy({
+where: { name: 'Sanjay' }
+})
+
+---
+
+Sequelize options in define
+
+* tableName: Sets custom table name
+* freezeTableName: Stops Sequelize from auto-pluralizing table name
+* timestamps: True by default. Adds createdAt and updatedAt fields
+
+Example
+
+const User = sequelize.define('User', {
+name: DataTypes.STRING
+}, {
+tableName: 'users',
+freezeTableName: true,
+timestamps: true
+})
+
+---
+
+Useful Sequelize methods
+
+* sync() - Creates or updates the table
+* create() - Inserts a new record
+* findAll() - Gets all records
+* findOne() - Gets one matching record
+* update() - Updates existing data
+* destroy() - Deletes a record
+
+---
+
+Troubleshooting tips
+
+* Always use double quotes for table names in pgAdmin if your table has uppercase letters
+* Make sure the database name, username, and password are correct
+* Use .then() or async-await to handle Sequelize promises properly
+
+---
+
+Let me know if you want a cheat sheet, code split by files, or REST API with Sequelize.
