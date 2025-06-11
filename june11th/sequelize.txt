@@ -1,8 +1,8 @@
-Sure! Below are clean and beginner-friendly notes on **Sequelize**, with **no special symbols** or formatting characters.
 
 ---
 
-Sequelize is a Node.js library used to interact with SQL databases using JavaScript. It is an Object Relational Mapping (ORM) tool.
+Sequelize is a Node.js library used to interact with SQL databases using JavaScript. 
+It is an Object Relational Mapping (ORM) tool.
 
 ---
 
@@ -134,5 +134,3 @@ Troubleshooting tips
 * Use .then() or async-await to handle Sequelize promises properly
 
 ---
-
-Let me know if you want a cheat sheet, code split by files, or REST API with Sequelize.
