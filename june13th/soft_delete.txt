@@ -1,0 +1,55 @@
+What is Paranoid in Sequelize?
+    Paranoid = Soft Delete
+
+Instead of deleting a record permanently, Sequelize just marks it as deleted by 
+setting a deletedAt timestamp.
+
+ This way, data is not lost and can be recovered later.
+
+ How to Enable Paranoid Mode
+You must set both timestamps: true and paranoid: true in the model.
+
+What Happens?
+    With paranoid: true, Sequelize:
+
+        Adds a new column: deletedAt (default is null)
+
+        On destroy(), it doesn’t delete row, it sets deletedAt = current time
+
+        On findAll() / findOne(), it ignores soft-deleted records
+
+
+Fetching Soft Deleted Records
+By default, Sequelize hides soft-deleted rows.
+
+    But if you want to include them:
+    const allUsers = await User.findAll({ paranoid: false });
+    | Option            | Meaning                    |
+    | ----------------- | -------------------------- |
+    | `paranoid: false` | Includes soft-deleted rows |
+    | `paranoid: true`  | (default) excludes them    |
+
+
+Restoring a Soft Deleted Record
+    await User.restore({ where: { id: 1 } });
+    It sets deletedAt = null
+    Record is now "undeleted"
+
+
+summary:
+
+    | Feature            | Usage                          |
+    | ------------------ | ------------------------------ |
+    | Enable soft delete | `paranoid: true`               |
+    | Delete softly      | `destroy()`                    |
+    | Restore            | `restore()`                    |
+    | Include deleted    | `findAll({ paranoid: false })` |
+
+
+Why Use Paranoid Mode?
+    Prevent accidental data loss
+    Useful for audit logs or undo
+    Keeps deleted data hidden, but not gone
+
+
+
