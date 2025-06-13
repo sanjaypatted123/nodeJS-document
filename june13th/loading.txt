@@ -3,20 +3,23 @@ which means how we load associated data (like related records).
 
 
 What is Loading in Sequelize?
-There are two main types of loading associated data:
+    There are two main types of loading associated data:
 
-Type	Meaning
+Type	        Meaning
 Eager Loading	Load related data together in one query using .include
 Lazy Loading	Load related data separately, only when needed using methods like .getPosts()
 
 
 Eager Loading
-Load everything in one go using .findOne() or .findAll() with include
+    In Sequelize, eager loading is mainly done by using the include option on a 
+    model finder query (such as findOne, findAll, etc).
+
+    Load everything in one go using .findOne() or .findAll() with include
 
 Lazy Loading
-Load main record first, then manually load relations
-const user = await User.findByPk(1);       // 👈 Load user only
-const posts = await user.getPosts();       // 👈 Load posts when needed
+    Load main record first, then manually load relations
+    const user = await User.findByPk(1);       // 👈 Load user only
+    const posts = await user.getPosts();       // 👈 Load posts when needed
 
 
 | Feature     | Eager Loading               | Lazy Loading               |

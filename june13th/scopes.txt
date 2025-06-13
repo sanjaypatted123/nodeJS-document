@@ -1,11 +1,9 @@
 Scopes are pre-defined filters or queries you attach to a model to reuse common conditions.
 
  Why Use Scopes?
-Avoid repeating where, limit, order, etc.
-
-Keep code clean and reusable
-
-Can be used for default filtering (e.g., only active users)
+  Avoid repeating where, limit, order, etc.
+  Keep code clean and reusable
+  Can be used for default filtering (e.g., only active users)
 
 ————————————————————————————————————————————————————————————————————————
 
@@ -23,7 +21,6 @@ const User = sequelize.define('User', {
     }
   }
 });
-
 
 
 | Scope Name     | Meaning                          |
@@ -45,9 +42,7 @@ summary:
 
 Benefits of Using Scopes
     Cleaner code
-
     Reusable queries
-
     Protect sensitive data (e.g., scope out soft-deleted users)
 
 

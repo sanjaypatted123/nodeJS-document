@@ -35,7 +35,6 @@ Restoring a Soft Deleted Record
     It sets deletedAt = null
     Record is now "undeleted"
 
-
 summary:
 
     | Feature            | Usage                          |

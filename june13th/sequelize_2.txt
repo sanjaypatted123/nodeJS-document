@@ -16,7 +16,7 @@ What Is One-to-One?
 
 Example:
 A User has one Profile
-A Profile belongs to one User
+A Profile  belongs to one User
 
 primary table:
 | Line                              | Explanation                         |
