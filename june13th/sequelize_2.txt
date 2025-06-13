@@ -1,0 +1,42 @@
+What Are Associations in Sequelize?
+In databases, associations define how tables are related to each other. 
+In Sequelize, we define associations between models to represent 
+relationships like:
+
+| Relationship Type | Example                         |
+| ----------------- | ------------------------------- |
+| One-to-One        | A user has one profile          |
+| One-to-Many       | A user has many posts           |
+| Many-to-Many      | Students belong to many courses |
+
+
+one to one :
+What Is One-to-One?
+ One record in Table A is linked to exactly one record in Table B.
+
+Example:
+A User has one Profile
+A Profile belongs to one User
+
+primary table:
+| Line                              | Explanation                         |
+| --------------------------------- | ----------------------------------- |
+| `sequelize.define('User', {...})` | Creates a model named **User**      |
+| `name: DataTypes.STRING`          | Adds a column `name` of type string |
+| `User.hasOne(models.Profile)`     | Says **one User has one Profile**   |
+| `associate = models => {}`        | A function that sets relationships  |
+
+foreign table:
+| Line                                 | Explanation                        |
+| ------------------------------------ | ---------------------------------- |
+| `sequelize.define('Profile', {...})` | Creates a model named **Profile**  |
+| `bio: DataTypes.STRING`              | Adds a column `bio` of type string |
+| `Profile.belongsTo(models.User)`     | Says **Profile belongs to a User** |
+
+
+setProfile(profile) → Adds the userId to the Profile table.
+
+include: Profile → Joins and fetches the related Profile with the User.
+
+Final output will show user + bio together.
+
