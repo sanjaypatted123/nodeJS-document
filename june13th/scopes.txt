@@ -1,0 +1,55 @@
+Scopes are pre-defined filters or queries you attach to a model to reuse common conditions.
+
+ Why Use Scopes?
+Avoid repeating where, limit, order, etc.
+
+Keep code clean and reusable
+
+Can be used for default filtering (e.g., only active users)
+
+————————————————————————————————————————————————————————————————————————
+
+
+const User = sequelize.define('User', {
+  name: DataTypes.STRING,
+  isActive: DataTypes.BOOLEAN
+}, {
+  scopes: {
+    active: {
+      where: { isActive: true }
+    },
+    alphabetical: {
+      order: [['name', 'ASC']]
+    }
+  }
+});
+
+
+
+| Scope Name     | Meaning                          |
+| -------------- | -------------------------------- |
+| `active`       | Only users with `isActive: true` |
+| `alphabetical` | Orders by name A-Z               |
+
+————————————————————————————————————————————————————————————————————————
+
+
+summary:
+
+| Type            | Example Usage                                  |
+| --------------- | ---------------------------------------------- |
+| Simple scope    | `User.scope('active')`                         |
+| Combined scopes | `User.scope(['active', 'alphabetical'])`       |
+| Default scope   | `defaultScope: { where: ... }`                 |
+| Custom method   | `User.scope({ method: ['byName', 'Sanjay'] })` |
+
+Benefits of Using Scopes
+    Cleaner code
+
+    Reusable queries
+
+    Protect sensitive data (e.g., scope out soft-deleted users)
+
+
+
+

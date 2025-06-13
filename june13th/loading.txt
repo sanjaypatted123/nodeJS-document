@@ -1,0 +1,27 @@
+loading in Sequelize — that usually refers to Eager Loading or Lazy Loading, 
+which means how we load associated data (like related records).
+
+
+What is Loading in Sequelize?
+There are two main types of loading associated data:
+
+Type	Meaning
+Eager Loading	Load related data together in one query using .include
+Lazy Loading	Load related data separately, only when needed using methods like .getPosts()
+
+
+Eager Loading
+Load everything in one go using .findOne() or .findAll() with include
+
+Lazy Loading
+Load main record first, then manually load relations
+const user = await User.findByPk(1);       // 👈 Load user only
+const posts = await user.getPosts();       // 👈 Load posts when needed
+
+
+| Feature     | Eager Loading               | Lazy Loading               |
+| ----------- | --------------------------- | -------------------------- |
+| Syntax      | `.findOne({ include })`     | `.getPosts()`, etc.        |
+| Queries     | 1 (with JOIN)               | 2 (separate)               |
+| Performance | Better if you need all data | Better for conditional use |
+| Use case    | Always show child data      | Show only when needed      |

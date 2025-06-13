@@ -40,3 +40,72 @@ include: Profile → Joins and fetches the related Profile with the User.
 
 Final output will show user + bio together.
 
+What Is One-to-Many?
+One User can have many Posts
+
+Each Post belongs to one User
+
+Step-by-Step Example
+
+
+User model
+
+Post model
+
+Their relationship: User.hasMany(Post) and Post.belongsTo(User)
+
+| Line                         | Explanation                        |
+| ---------------------------- | ---------------------------------- |
+| `Sequelize` and `DataTypes`  | Main classes to define models      |
+| `'demo', 'postgres', '1971'` | Database name, username, password  |
+| `dialect: 'postgres'`        | We’re using PostgreSQL as database |
+
+
+user table:
+| Line                     | Explanation                                   |
+| ------------------------ | --------------------------------------------- |
+| `User`                   | A Sequelize model representing the User table |
+| `name: DataTypes.STRING` | One column: name (string)                     |
+
+
+post table:
+| Line      | Explanation                     |
+| --------- | ------------------------------- |
+| `Post`    | A model representing blog posts |
+| `title`   | Short title of the post         |
+| `content` | Full content (TEXT datatype)    |
+
+
+
+| Line                   | Explanation                               |
+| ---------------------- | ----------------------------------------- |
+| `User.hasMany(Post)`   | Adds foreign key `userId` to `Post` table |
+| `Post.belongsTo(User)` | Defines relationship from Post’s side     |
+
+
+| Line                               | Meaning                              |
+| ---------------------------------- | ------------------------------------ |
+| `sequelize.sync({ force: true })`  | Recreates tables fresh               |
+| `User.create(...)`                 | Creates a user                       |
+| `Post.create(...)`                 | Creates a post                       |
+| `user.addPost(post)`               | Adds post with userId foreign key    |
+| `User.findOne({ include: Post })`  | Fetches user with all posts (JOIN)   |
+| `console.log(JSON.stringify(...))` | Pretty prints the user + their posts |
+
+
+What Is Many-to-Many?
+In a Many-to-Many relationship:
+
+One Student can join many Courses
+
+One Course can have many Students
+
+To connect both, Sequelize automatically creates a junction table (also called join table),
+ such as StudentCourses.
+
+ | Concept         | Code                                           |
+| --------------- | ---------------------------------------------- |
+| Many-to-Many    | `ModelA.belongsToMany(ModelB, { through })`    |
+| Join table      | Created automatically (e.g., `StudentCourses`) |
+| Assign items    | `student.addCourse(course)`                    |
+| Fetch with join | `include: Course`                              |
